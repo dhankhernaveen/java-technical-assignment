@@ -1,18 +1,30 @@
 package kata.supermarket;
 
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemByWeight implements Item {
 
-    private final WeighedProduct product;
-    private final BigDecimal weightInKilos;
+    private WeighedProduct product;
+    private BigDecimal weightInKilos;
 
-    ItemByWeight(final WeighedProduct product, final BigDecimal weightInKilos) {
-        this.product = product;
-        this.weightInKilos = weightInKilos;
-    }
-
+    @Override
     public BigDecimal price() {
-        return product.pricePerKilo().multiply(weightInKilos).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return product.getPricePerKilo().multiply(weightInKilos).setScale(2, RoundingMode.HALF_UP);
     }
+
+    @Override
+    public BigDecimal discountedPrice() {
+        return product.getDiscount().apply(product.getPricePerKilo(), weightInKilos);
+    }
+
 }

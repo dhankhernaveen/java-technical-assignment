@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class WeighedProductTest {
 
     @ParameterizedTest
-    @MethodSource
+    @MethodSource("itemFromWeighedProductHasExpectedUnitPrice")
     void itemFromWeighedProductHasExpectedUnitPrice(String pricePerKilo, String weightInKilos, String expectedPrice) {
         final WeighedProduct weighedProduct = new WeighedProduct(new BigDecimal(pricePerKilo));
         final Item weighedItem = weighedProduct.weighing(new BigDecimal(weightInKilos));

@@ -1,16 +1,26 @@
 package kata.supermarket;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
 import java.math.BigDecimal;
 
+@Data
+@Builder
+@AllArgsConstructor
 public class ItemByUnit implements Item {
 
     private final Product product;
+    private final BigDecimal numberOfUnits;
 
-    ItemByUnit(final Product product) {
-        this.product = product;
+    @Override
+    public BigDecimal price() {
+        return product.getPricePerUnit();
     }
 
-    public BigDecimal price() {
-        return product.pricePerUnit();
+    @Override
+    public BigDecimal discountedPrice() {
+        return product.getDiscount().apply(product.getPricePerUnit(), numberOfUnits);
     }
 }

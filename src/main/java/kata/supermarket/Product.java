@@ -1,20 +1,30 @@
 package kata.supermarket;
 
+import kata.supermarket.discount.Discount;
+import kata.supermarket.discount.ZeroDiscount;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
-    private final BigDecimal pricePerUnit;
+    private BigDecimal pricePerUnit;
+    private Discount discount;
 
     public Product(final BigDecimal pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
+        this.discount = new ZeroDiscount();
     }
 
-    BigDecimal pricePerUnit() {
-        return pricePerUnit;
+    public Item totalUnits(Integer units) {
+        return new ItemByUnit(this, BigDecimal.valueOf(units));
     }
 
-    public Item oneOf() {
-        return new ItemByUnit(this);
-    }
 }

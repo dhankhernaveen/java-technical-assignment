@@ -11,22 +11,19 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-class BuyOneGetOneDiscountTest {
-
+class BuyTwoForOnePoundDiscountTest {
     @InjectMocks
-    BuyOneGetOneDiscount buyOneGetOneDiscount;
+    BuyTwoForOnePoundDiscount buyTwoForOnePoundDiscount;
 
     @ParameterizedTest
     @CsvSource({
-            "10,1,0",
-            "10,2,10",
-            "10,3,0",
-            "10,4,20"
+            "0.75,2,0.50",
+            "0.75,4,1.00",
+            "2,2,3"
     })
     void shouldCalculateCorrectDiscount(BigDecimal price, BigDecimal quantity, BigDecimal expectedDiscountedPrice) {
-        BigDecimal actualPrice = buyOneGetOneDiscount.apply(price, quantity);
+        BigDecimal actualPrice = buyTwoForOnePoundDiscount.apply(price, quantity);
         assertEquals(expectedDiscountedPrice, actualPrice);
     }
-
 
 }

@@ -1,5 +1,7 @@
 package kata.supermarket;
 
+import kata.supermarket.discount.BuyOneGetOneDiscount;
+import kata.supermarket.discount.BuyTwoForOnePoundDiscount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,7 +31,9 @@ class BasketTest {
                 aSingleItemPricedPerUnit(),
                 multipleItemsPricedPerUnit(),
                 aSingleItemPricedByWeight(),
-                multipleItemsPricedByWeight()
+                multipleItemsPricedByWeight(),
+                buyOneGetOneDiscount(),
+                buyTwoItemsForAPound()
         );
     }
 
@@ -46,6 +50,21 @@ class BasketTest {
     private static Arguments multipleItemsPricedPerUnit() {
         return Arguments.of("multiple items priced per unit", "2.04",
                 Arrays.asList(aPackOfDigestives(), aPintOfMilk()));
+    }
+
+    private static Arguments buyOneGetOneDiscount() {
+        return Arguments.of("buy one get one only applied when offer is valid ", "17.50",
+                Arrays.asList(
+                        new Product(new BigDecimal("2.50"), new BuyOneGetOneDiscount()).totalUnits(6),
+                        new Product(new BigDecimal("10.0"), new BuyOneGetOneDiscount()).totalUnits(1)
+                ));
+    }
+
+    private static Arguments buyTwoItemsForAPound() {
+        return Arguments.of("buy two at One only applied when offer is valid ", "3.00",
+                Arrays.asList(
+                        new Product(new BigDecimal("2.50"), new BuyTwoForOnePoundDiscount()).totalUnits(6)
+                ));
     }
 
     private static Arguments aSingleItemPricedPerUnit() {

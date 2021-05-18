@@ -1,7 +1,9 @@
 package kata.supermarket;
 
 import kata.supermarket.discount.BuyOneGetOneDiscount;
+import kata.supermarket.discount.BuyThreeGetOneFree;
 import kata.supermarket.discount.BuyTwoForOnePoundDiscount;
+import kata.supermarket.discount.BuyXForY;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -33,7 +35,12 @@ class BasketTest {
                 aSingleItemPricedByWeight(),
                 multipleItemsPricedByWeight(),
                 buyOneGetOneDiscount(),
-                buyTwoItemsForAPound()
+                buyTwoItemsForAPound(),
+                buyThreeKitkatAndGetOneFree(),
+                buyThreeBountyAndNothingIsFree(),
+                buyThreeKitKatAtDiscountedPrice(),
+                buyKitkatWithoutDiscount()
+               // ,buyMultipleKitKats() - ran out of time
         );
     }
 
@@ -66,6 +73,41 @@ class BasketTest {
                         new Product(new BigDecimal("2.50"), new BuyTwoForOnePoundDiscount()).totalUnits(6)
                 ));
     }
+
+    private static Arguments buyThreeKitkatAndGetOneFree() {
+        return Arguments.of("buy three 3 at price of 2 ", "20.00",
+                Arrays.asList(
+                        new Product(new BigDecimal("10"), new BuyThreeGetOneFree("Kitkat")).totalUnits(3)
+                ));
+    }
+
+    private static Arguments buyThreeKitKatAtDiscountedPrice() {
+        return Arguments.of("buy three 3 at ", "15.00",
+                Arrays.asList(
+                        new Product(new BigDecimal("10"), new BuyXForY(new BigDecimal(3),new BigDecimal(("5")))).totalUnits(3)
+                ));
+    }
+    private static Arguments buyKitkatWithoutDiscount() {
+        return Arguments.of("buy three 2 at ", "20.00",
+                Arrays.asList(
+                        new Product(new BigDecimal("10"), new BuyXForY(new BigDecimal(3),new BigDecimal(("5")))).totalUnits(2)
+                ));
+    }
+
+    private static Arguments buyMultipleKitKats() {
+        return Arguments.of("buy kitkats  at ", "35.00",
+                Arrays.asList(
+                        new Product(new BigDecimal("10"), new BuyXForY(new BigDecimal(3),new BigDecimal(("5")))).totalUnits(5)
+                ));
+    }
+
+    private static Arguments buyThreeBountyAndNothingIsFree() {
+        return Arguments.of("buy three 3 bounty at full price ", "30.00",
+                Arrays.asList(
+                        new Product(new BigDecimal("10"), new BuyThreeGetOneFree("bounty")).totalUnits(3)
+                ));
+    }
+
 
     private static Arguments aSingleItemPricedPerUnit() {
         return Arguments.of("a single item priced per unit", "0.49", Collections.singleton(aPintOfMilk()));
